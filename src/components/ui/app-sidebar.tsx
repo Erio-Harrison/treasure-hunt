@@ -111,13 +111,18 @@ import {
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 
+import {logout} from "@/app/auth/logout/logout"; // 引入 signOut
+
 // Menu items
 const items = [
   { title: "Home", url: "#", icon: null },
   { title: "Inbox", url: "#", icon: null },
 ];
 
-export function AppSidebar() {
+
+
+
+export function AppSidebar({ email = "m@example.com", userName = "shadcn", userImage }: { email: string; userName: string; userImage?: string }) {
   return (
     <Sidebar>
       {/* Header with Dropdown */}
@@ -180,15 +185,21 @@ export function AppSidebar() {
       {/* Footer with Dropdown */}
       <SidebarFooter>
         <div className="flex items-center gap-2 p-4">
-          <User className="w-6 h-6" />
+          {userImage ? (
+            <img src={userImage} alt="User" className="w-6 h-6 rounded-full" />
+          ) : (
+            <User className="w-6 h-6" />
+          )}
           <div className="flex-1">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <SidebarMenuButton className="flex justify-between items-center w-full">
                   <div className="flex flex-col text-left">
-                    <span className="text-sm font-medium">shadcn</span>
+                    <span className="text-sm font-medium">
+                      {userName}
+                    </span>
                     <span className="text-xs text-muted-foreground">
-                      m@example.com
+                      {email}
                     </span>
                   </div>
                   <ChevronDown className="ml-2" />
@@ -209,7 +220,7 @@ export function AppSidebar() {
                   <span>Notifications</span>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={() => logout()}>
                   <span>Log out</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
@@ -217,6 +228,6 @@ export function AppSidebar() {
           </div>
         </div>
       </SidebarFooter>
-    </Sidebar>
+    </Sidebar >
   );
 }
